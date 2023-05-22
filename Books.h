@@ -13,6 +13,7 @@ public:
     string book_name;
     string author_name;
     int quantity;
+
 };
 
 

@@ -2,19 +2,21 @@
 
 #include "Books.h"
 #include "Books.cpp"
-#include "Librarian.h"
-#include "Librarian.cpp"
+#include "Library.h"
+#include "Library.cpp"
+#include "Student.h"
 
 using namespace std;
 
 int main() {
-    Librarian librarian;
+    Library librarian;
+    Student student;
     librarian.loadBookData();
 
     int choice;
     do {
         headMessage("Library Management System");
-        cout << "\n\n\t\t\t1. Librarian Menu";
+        cout << "\n\n\t\t\t1. Library Menu";
         cout << "\n\n\t\t\t2. Student Menu";
         cout << "\n\n\t\t\t0. Exit";
         cout << "\n\n\t\t\tEnter your choice: ";
@@ -25,13 +27,15 @@ int main() {
             case 1: {
                 int librarianChoice;
                 do {
-                    headMessage("Librarian Menu");
+                    headMessage("Library Menu");
                     cout << "\n\n\t\t\t1. Add Book";
                     cout << "\n\n\t\t\t2. Modify Book";
                     cout << "\n\n\t\t\t3. Delete Book";
                     cout << "\n\n\t\t\t4. View Book List";
                     cout << "\n\n\t\t\t5. Search Book";
-                    cout << "\n\n\t\t\t6. Save Book Data";
+                    cout << "\n\n\t\t\t6. Issue Book";
+                    cout << "\n\n\t\t\t7. Return Book";
+                    cout << "\n\n\t\t\t8. Save Book Data";
                     cout << "\n\n\t\t\t0. Exit";
                     cout << "\n\n\t\t\tEnter your choice: ";
                     cin >> librarianChoice;
@@ -53,7 +57,10 @@ int main() {
                             librarian.searchBook();
                             break;
                         case 6:
-                            librarian.saveBookData();
+                            librarian.issueBookToStudent();
+                            break;
+                        case 7:
+                            librarian.returnBookFromStudent();
                             break;
                         case 0:
                             librarian.saveBookData();
@@ -65,10 +72,10 @@ int main() {
                 } while (librarianChoice != 0);
                 break;
             }
-            case 2: {
+            case 2:
+            {
                 int studentChoice;
-                do {
-                    headMessage("Student Menu");
+                do { headMessage("Student Menu");
                     cout << "\n\n\t\t\t1. View Book List";
                     cout << "\n\n\t\t\t2. Search Book";
                     cout << "\n\n\t\t\t0. Go Back";
@@ -80,7 +87,7 @@ int main() {
                             librarian.viewBookList(2);
                             break;
                         case 2:
-//                            librarian.returnBook();
+                            librarian.searchBook();
                             break;
                         case 3:
 //                            librarian.calculateFine();
