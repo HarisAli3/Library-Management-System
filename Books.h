@@ -14,6 +14,8 @@ public:
     string author_name;
     int quantity;
 
+    long getBookName();
+
 };
 
 

@@ -3,3 +3,8 @@
 //
 
 #include "Books.h"
+
+long Books::getBookName() {
+    return 0;
+}
+

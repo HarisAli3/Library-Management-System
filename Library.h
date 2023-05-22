@@ -8,6 +8,9 @@
 #include "Books.h"
 #include "Student.h"
 #include "Welcome.cpp"
+#include "conio.h"
+#include <fstream>
+#include <ctime>
 #include <cstdlib>
 #include <vector>
 #include <cstring>
@@ -21,34 +24,13 @@ private:
 
 protected:
     vector<Books> books;
+//    vector<Student> students;
     int bookCount;
 public:
     Library() {
         bookCount = 0;
         librarianPassword = "";
     }
-
-//    void addBook(const Books& book) {
-//        books.push_back(book);
-//        cout << "\n\t\t\tBook added successfully!";
-//    }
-//
-////    Books* findBookById(int id) {
-////        for (auto& book : books) {
-////            if (book.book_id == id) {
-////                return &book;
-////            }
-////        }
-////        return nullptr;
-////    }
-//
-//    void viewBookList() {
-//        cout << "\n\t\t\t***** View Book List *****";
-//        cout << "\n\t\t\tBook ID\tBook Name\tAuthor Name\tQuantity";
-//        for (const auto& book : books) {
-//            cout << "\n\t\t\t" << book.book_id << "\t" << book.book_name << "\t" << book.author_name << "\t" << book.quantity;
-//        }
-//    }
 
     void addBook();
     void modifyBook();
@@ -63,6 +45,34 @@ public:
 
     void issueBookToStudent();
     void returnBookFromStudent();
+
+    void viewIssuedBooksHistory() {
+        headMessage("View Issued History");
+        ifstream file("issued_books.txt");
+        if (file.is_open()) {
+
+
+            int id, book;
+            time_t issueTime;
+            int i = 0;
+            while (file >> id >> book >> issueTime) {
+                cout << "\n\n\t\t\t\t\t\t********** " << i + 1 << ". ********** \n";
+                cout << "\n\n\t\t\tStudent ID: " << id;
+                cout << "\n\n\t\t\tBook ID: " << book;
+                cout << "\n\n\t\t\tIssue Time: " << ctime(&issueTime);
+                cout << "\n\t\t\t";
+//                cout << "\t\t\t" << id << "\t\t" << book << "\t\t" << ctime(&issueTime);
+            }
+
+            file.close();
+            getch();
+        } else {
+            cout << "\n\t\t\tNo issued history found!" << endl;
+            getch();
+        }
+    }
+
+
 
 };
 

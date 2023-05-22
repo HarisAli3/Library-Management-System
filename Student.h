@@ -6,52 +6,56 @@
 #define LIBRARY_PROJECT_OOP_STUDENT_H
 
 #include "Student.cpp"
+#include "conio.h"
 #include <vector>
-
-class Student {
-private:
-    string studentName;
-    int studentID;
-    int issuedBookID;
-    time_t issueDate;
+//
+//class Student {
+//private:
+//    string studentName;
+//    int studentID;
+//    int issuedBookID;
+//    time_t issueDate;
 //    vector<int> issuedBooks;
-public:
-    Student() {
-        studentName = "";
-        studentID = 0;
-        issuedBookID = 0;
-        issueDate = 0;
-    }
-
-    void setStudentName(const string &name) {
-        studentName = name;
-    }
-
-    void setStudentID(int id) {
-        studentID = id;
-    }
-
-
-    void issueBook(int bookID) {
-        issuedBookID = bookID;
-        time(&issueDate);
-        cout << "\n\t\t\tBook issued to student!";
-    }
-
-    void returnBook() {
-        if (issuedBookID != 0) {
-            issuedBookID = 0;
-            time_t returnDate;
-            time(&returnDate);
-            double days = difftime(returnDate, issueDate) / (24 * 60 * 60);
-            cout << "\n\t\t\tBook returned by student!";
-            cout << "\n\t\t\tNumber of days book was issued: " << days;
-        } else {
-            cout << "\n\t\t\tNo book issued to return!";
-        }
-    }
-
-};
+//
+//public:
+//
+//    Student() {
+//        studentName = "";
+//        studentID = 0;
+//        issuedBookID = 0;
+//        issueDate = 0;
+//    }
+//
+//
+//    void issueBook(int bookID) {
+//        for (const auto& book : issuedBooks) {
+//            if (book == bookID) {
+//                cout << "\n\n\t\t\tYou have already issued this book!";
+//                return;
+//            }
+//        }
+//        issuedBooks.push_back(bookID);
+//    }
+//
+//
+//    void setStudentID(int id) {
+//        studentID = id;
+//    }
+//
+//    int getStudentID() const {
+//        return studentID;
+//    }
+//
+//    const vector<int>& getIssuedBooks() const {
+//        return issuedBooks;
+//    }
+//
+//    void setStudentName(const string &name) {
+//        studentName = name;
+//    }
+//
+//
+//};
 
 
 
