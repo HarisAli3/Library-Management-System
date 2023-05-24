@@ -9,12 +9,17 @@ using namespace std;
 
 class Books {
 public:
-    int book_id;
-    string book_name;
-    string author_name;
+    int bookID;
+    string bookName;
+    string authorName;
     int quantity;
 
-    long getBookName();
+    Books() {
+        bookID = 0;
+        bookName = "";
+        authorName = "";
+        quantity = 0;
+    }
 
 };
 

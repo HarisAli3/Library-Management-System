@@ -17,7 +17,8 @@
 #include <fstream>
 #include <sstream>
 
-class Library {
+
+class Library : public Books{
 
 private:
     string librarianPassword;
@@ -32,6 +33,9 @@ public:
         librarianPassword = "";
     }
 
+    static void MainMenu(Library&);
+    static void LibrarianMenu(Library&);
+    static void StudentMenu(Library&);
     void addBook();
     void modifyBook();
     void deleteBook();
@@ -46,33 +50,7 @@ public:
     void issueBookToStudent();
     void returnBookFromStudent();
 
-    void viewIssuedBooksHistory() {
-        headMessage("View Issued History");
-        ifstream file("issued_books.txt");
-        if (file.is_open()) {
-
-
-            int id, book;
-            time_t issueTime;
-            int i = 0;
-            while (file >> id >> book >> issueTime) {
-                cout << "\n\n\t\t\t\t\t\t********** " << i + 1 << ". ********** \n";
-                cout << "\n\n\t\t\tStudent ID: " << id;
-                cout << "\n\n\t\t\tBook ID: " << book;
-                cout << "\n\n\t\t\tIssue Time: " << ctime(&issueTime);
-                cout << "\n\t\t\t";
-//                cout << "\t\t\t" << id << "\t\t" << book << "\t\t" << ctime(&issueTime);
-            }
-
-            file.close();
-            getch();
-        } else {
-            cout << "\n\t\t\tNo issued history found!" << endl;
-            getch();
-        }
-    }
-
-
+    static void viewIssuedBooksHistory();
 
 };
 
