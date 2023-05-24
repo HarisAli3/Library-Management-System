@@ -13,7 +13,6 @@ public:
     string bookName;
     string authorName;
     int quantity;
-
     Books() {
         bookID = 0;
         bookName = "";
