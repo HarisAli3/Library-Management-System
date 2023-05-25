@@ -24,6 +24,7 @@ private:
     vector<Books> books;
     int bookCount;
 
+    string librarianPassword = "1234";
 public:
 
     Library() {

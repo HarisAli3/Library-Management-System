@@ -19,8 +19,20 @@ void Library::MainMenu(Library& byteCode) {
 
         switch(choice) {
             case 1: {
-                Library::LibrarianMenu(byteCode);
-                goto MainMenu;
+                string passCode;
+                system("cls");
+                headMessage("Librarian Authentication");
+                cout << "\n\n\t\t\tPlease enter password for librarian: ";
+                cin >> passCode;
+                if (passCode == byteCode.librarianPassword) {
+                    cout << "\n\n\t\t\tAccess Granted! Welcome to Byte Code Library.";
+                    Library::LibrarianMenu(byteCode);
+                    goto MainMenu;
+                } else {
+                    cout << "\n\n\t\t\tAccess Denied! Incorrect password.";
+                    getch();
+                    goto MainMenu;
+                }
             }
             case 2:
                 StudentMenu(byteCode);
@@ -148,6 +160,7 @@ void Library::addBook() {
     bookCount++;
 
     cout << "\n\t\t\tBook added successfully!";
+    getch();
 }
 
 void Library::modifyBook() {
@@ -158,17 +171,24 @@ void Library::modifyBook() {
     int id;
     cout << "\n\t\t\tEnter Book ID to modify: ";
     cin >> id;
+
     bool found = false;
+
     for (int i = 0; i < bookCount; i++) {
         if (books[i].bookID == id) {
+
             cout << "\n\t\t\tEnter new Book Name: ";
             cin.ignore();
             getline(cin, books[i].bookName);
+
             cout << "\n\t\t\tEnter new Author Name: ";
             getline(cin, books[i].authorName);
+
             cout << "\n\t\t\tEnter new Quantity: ";
             cin >> books[i].quantity;
+
             cout << "\n\t\t\tBook modified successfully!";
+
             found = true;
             break;
         }
@@ -187,6 +207,8 @@ void Library::deleteBook() {
     bool found = false;
     for (int i = 0; i < bookCount; i++) {
         if (books[i].bookID == id) {
+            // books.erase is used to remove elements from a container
+            // books.begin + i is the address of the book to be deleted
             books.erase(books.begin() + i);
             bookCount--;
             cout << "\n\t\t\tBook deleted successfully!";
@@ -221,8 +243,10 @@ void Library::viewBookList(int x) {
 }
 
 void Library::searchBook(int x) {
+
     headMessage("Search Book");
     int choice;
+
     cout << "\n\n\t\t\t1. Search by Book ID";
     cout << "\n\n\t\t\t2. Search by Book Name";
     cout << "\n\n\t\t\tEnter your choice: ";
@@ -231,7 +255,8 @@ void Library::searchBook(int x) {
     cin.ignore();
     system("cls");
     switch (choice) {
-        case 1: {
+        case 1:
+        {
             int bookID;
             cout << "\n\n\t\t\tEnter Book ID: ";
             cin >> bookID;
@@ -248,7 +273,8 @@ void Library::searchBook(int x) {
             cout << "\n\n\t\t\tBook not found!";
             break;
         }
-        case 2: {
+        case 2:
+        {
             string bookName;
             cout << "\n\n\t\t\tEnter Book Name: ";
             getline(cin, bookName);
@@ -257,7 +283,7 @@ void Library::searchBook(int x) {
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].bookName == bookName) {
                     cout << "\n\n\t\t\tBook Found!";
-                    displayBookDetails(books[i],x);
+                    displayBookDetails(books[i], x);
                     return;
                 }
             }
@@ -301,6 +327,7 @@ bool isBookAlreadyIssued(int bookID, int studentID) {
 void Library::issueBookToStudent() {
     headMessage("Issue Book to Student");
     int studentID;
+
     cout << "\n\t\t\tEnter Student ID: ";
     cin >> studentID;
     cin.ignore();
@@ -311,26 +338,36 @@ void Library::issueBookToStudent() {
     cin.ignore();
 
     // Check if the books is already issued to another student
-    if (isBookAlreadyIssued(bookID, studentID) || books[0].quantity <= 0) {
+    if (isBookAlreadyIssued(bookID, studentID) || books[0].quantity > 0) {
         cout << "\n\t\t\tBook already issued to another student or no stock available!" << endl;
         return;
     }
 
     // Find the books in the library
-    Books* book = nullptr;
+    Books *book = nullptr;
+
+    // b is a reference to the book in the books vector
+    // auto is used to automatically determine the type of b
+    // & is used to pass the address of b
+
     for (auto& b : books) {
         if (b.bookID == bookID) {
             book = &b;
             break;
         }
     }
+
     if (book != nullptr) {
         // Reduce the quantity of the books+
         book->quantity -= 1;
 
         // Open the file to append the issued books information
+        // ios:app is used to append the file
+        // Append means to add something to the end of the file
         ofstream outFile("issued_books.txt", ios::app);
+
         if (outFile.is_open()) {
+            // time nullptr is used to get the current time
             outFile << studentID << " " << bookID << " " << time(nullptr) << endl;
             outFile.close();
             cout << "\n\t\t\tBook '" << book->bookName << "' issued to student!" << endl;
@@ -379,11 +416,12 @@ void Library::returnBookFromStudent() {
                 if (id == studentID && book == bookID) {
                     time_t issueTime;
                     file >> issueTime;
-
+                    // difftime returns the difference between two time_t values in seconds
                     double days = difftime(currentTime, issueTime) / (24 * 60 * 60);
                     if (days > 30) {
                         double fine = 15 * (days - 30);
                         cout << "\n\t\t\tFine to be paid: $" << fine << endl;
+                        getch();
                     }
                     break;
                 }
@@ -392,6 +430,7 @@ void Library::returnBookFromStudent() {
         }
 
         // Remove the returned books information from the file
+        // Create a temporary file to store the data
         ifstream inputFile("issued_books.txt");
         ofstream outputFile("temp.txt");
         if (inputFile.is_open() && outputFile.is_open()) {
@@ -406,10 +445,12 @@ void Library::returnBookFromStudent() {
             outputFile.close();
 
             // Replace the original file with the updated file
+            // remove() != 0 means that the file was not deleted
             if (remove("issued_books.txt") != 0) {
                 cout << "\n\t\t\tFailed to return books!" << endl;
                 return;
             }
+
             if (rename("temp.txt", "issued_books.txt") != 0) {
                 cout << "\n\t\t\tFailed to return books!" << endl;
                 return;
@@ -436,16 +477,23 @@ void Library::returnBookFromStudent() {
 void Library::viewIssuedBooksHistory() {
     headMessage("View Issued History");
     ifstream file("issued_books.txt");
+
     if (file.is_open()) {
         // Check if the file is empty
+        // ios::end is used to move the cursor to the end of the file
+        // seekg is used to move the cursor to the specified position
+        // (0, ios::end) is used to move the cursor to the end of the file
         file.seekg(0,ios::end);
-        if(file.tellg()<1){
+        // tellg() returns the position of the cursor
+        // file.tellg() < 1 means that the file is empty
+        if (file.tellg() < 1){
             cout << "\n\t\t\tNo issued history found!" << endl;
             getch();
             //empty
-        }else {
+        } else {
             file.clear(); // clear all flags(eof)
-            file.seekg(0, ios::beg);//reset to front
+            // ios::beg is used to move the cursor to the beginning of the file
+            file.seekg(0, ios::beg);
             int id, book;
             time_t issueTime;
             int i = 0;
@@ -455,9 +503,8 @@ void Library::viewIssuedBooksHistory() {
                 cout << "\n\n\t\t\tBook ID: " << book;
                 cout << "\n\n\t\t\tIssue Time: " << ctime(&issueTime);
                 cout << "\n\t\t\t";
-//                cout << "\t\t\t" << id << "\t\t" << books << "\t\t" << ctime(&issueTime);
             }
-            //not empty
+            // not empty
         }
         file.close();
         getch();
