@@ -9,6 +9,7 @@
 void Library::MainMenu(Library& byteCode) {
     int choice;
     do {
+        // MainMenu: is a label for goto statement
         MainMenu:
         headMessage("Byte Code Library");
         cout << "\n\n\t\t\t1. Librarian Menu";
@@ -17,26 +18,33 @@ void Library::MainMenu(Library& byteCode) {
         cout << "\n\n\t\t\tEnter your choice: ";
         cin >> choice;
 
-        switch(choice) {
-            case 1: {
-                string passCode;
-                system("cls");
-                headMessage("Librarian Authentication");
-                cout << "\n\n\t\t\tPlease enter password for librarian: ";
-                cin >> passCode;
-                if (passCode == byteCode.librarianPassword) {
-                    cout << "\n\n\t\t\tAccess Granted! Welcome to Byte Code Library.";
-                    Library::LibrarianMenu(byteCode);
-                    goto MainMenu;
-                } else {
-                    cout << "\n\n\t\t\tAccess Denied! Incorrect password.";
-                    getch();
-                    goto MainMenu;
-                }
-            }
-            case 2:
-                StudentMenu(byteCode);
+        if (choice == 1){
+            string passCode;
+            system("cls");
+            headMessage("Librarian Authentication");
+            cout << "\n\n\t\t\tPlease enter password for librarian: ";
+            cin >> passCode;
+            if (passCode == byteCode.librarianPassword) {
+                cout << "\n\n\t\t\tAccess Granted! Welcome to Byte Code Library.";
+                Library::LibrarianMenu(byteCode);
                 goto MainMenu;
+            } else {
+                cout << "\n\n\t\t\tAccess Denied! Incorrect password.";
+                getch();
+                goto MainMenu;
+            }
+        } else if (choice == 2){
+
+            StudentMenu(byteCode);
+            goto MainMenu;
+
+        } else if (choice == 0){
+
+            exit(0);
+
+        } else {
+            cout << "\n\t\t\tInvalid choice! Please try again.";
+            getch();
         }
     } while (choice != 0);
 }
@@ -93,7 +101,6 @@ void Library::LibrarianMenu(Library& librarian) {
                 break;
             case 0:
                 exit(0);
-                break;
             default:
                 cout << "\n\t\t\tInvalid choice! Please try again.";
         }
@@ -307,7 +314,7 @@ void Library::displayBookDetails(const Books& book, int x) {
 }
 
 
-bool isBookAlreadyIssued(int bookID, int studentID) {
+bool isBookAlreadyIssued(int studentID) {
     ifstream file("issued_books.txt");
     if (file.is_open()) {
         int id, book;
@@ -338,7 +345,7 @@ void Library::issueBookToStudent() {
     cin.ignore();
 
     // Check if the books is already issued to another student
-    if (isBookAlreadyIssued(bookID, studentID) || books[0].quantity > 0) {
+    if (isBookAlreadyIssued(studentID) || books[0].quantity > 0) {
         cout << "\n\t\t\tBook already issued to another student or no stock available!" << endl;
         return;
     }
@@ -409,13 +416,13 @@ void Library::returnBookFromStudent() {
     if (bookIssued) {
         // Calculate the number of days the books was issued
         time_t currentTime = time(nullptr);
-        ifstream file("issued_books.txt");
-        if (file.is_open()) {
+        ifstream bookRecords("issued_books.txt");
+        if (bookRecords.is_open()) {
             int id, book;
-            while (file >> id >> book) {
+            while (bookRecords >> id >> book) {
                 if (id == studentID && book == bookID) {
                     time_t issueTime;
-                    file >> issueTime;
+                    bookRecords >> issueTime;
                     // difftime returns the difference between two time_t values in seconds
                     double days = difftime(currentTime, issueTime) / (24 * 60 * 60);
                     if (days > 30) {
@@ -426,11 +433,11 @@ void Library::returnBookFromStudent() {
                     break;
                 }
             }
-            file.close();
+            bookRecords.close();
         }
 
-        // Remove the returned books information from the file
-        // Create a temporary file to store the data
+        // Remove the returned books information from the bookRecords
+        // Create a temporary bookRecords to store the data
         ifstream inputFile("issued_books.txt");
         ofstream outputFile("temp.txt");
         if (inputFile.is_open() && outputFile.is_open()) {
@@ -444,8 +451,8 @@ void Library::returnBookFromStudent() {
             inputFile.close();
             outputFile.close();
 
-            // Replace the original file with the updated file
-            // remove() != 0 means that the file was not deleted
+            // Replace the original bookRecords with the updated bookRecords
+            // remove() != 0 means that the bookRecords was not deleted
             if (remove("issued_books.txt") != 0) {
                 cout << "\n\t\t\tFailed to return books!" << endl;
                 return;
