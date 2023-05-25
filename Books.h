@@ -19,7 +19,6 @@ public:
         authorName = "";
         quantity = 0;
     }
-
 };
 
 

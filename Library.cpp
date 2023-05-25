@@ -9,6 +9,7 @@
 void Library::MainMenu(Library& librarian) {
     int choice;
     do {
+//        welcomeMessage();
         MainMenu:
         headMessage("Library Management System");
         cout << "\n\n\t\t\t1. Librarian Menu";

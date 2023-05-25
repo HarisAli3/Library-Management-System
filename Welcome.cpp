@@ -30,22 +30,22 @@ void headMessage(const char *message){
     printMessageCenter(message);
     cout << "\n\t\t\t---------------------------------------------------------------------------";
 }
-void welcomeMessage(){
-    system("color 0B");
-    headMessage("UOL");
-    cout << "\n\t\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
-    cout << "\n\t\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
-    cout << "\n\t\t\t\t        =                 WELCOME                   =";
-    cout << "\n\t\t\t\t        =                   TO                      =";
-    cout << "\n\t\t\t\t        =                LIBRARY                    =";
-    cout << "\n\t\t\t\t        =               MANAGEMENT                  =";
-    cout << "\n\t\t\t\t        =                 SYSTEM                    =";
-    cout << "\n\t\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
-    cout << "\n\t\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
-    cout << "\n\t\t\t\tThis Project has facility of maintaining records of books\n";
-    cout << "\n\t\t\t\tOne member can issue one book at a time. If he/she";
-    cout << "\n\t\t\t\tdoes not return Book upto  30 days  he/she have to";
-    cout << "\n\t\t\t\tpay fine of Rs.15/- per day.";
-    cout << "\n\n\n\t\t\t Press any key to continue.....";
-    getch();
-}
+//void welcomeMessage(){
+//    system("color 0B");
+//    headMessage("UOL");
+//    cout << "\n\t\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
+//    cout << "\n\t\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
+//    cout << "\n\t\t\t\t        =                 WELCOME                   =";
+//    cout << "\n\t\t\t\t        =                   TO                      =";
+//    cout << "\n\t\t\t\t        =                LIBRARY                    =";
+//    cout << "\n\t\t\t\t        =               MANAGEMENT                  =";
+//    cout << "\n\t\t\t\t        =                 SYSTEM                    =";
+//    cout << "\n\t\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
+//    cout << "\n\t\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
+//    cout << "\n\t\t\t\tThis Project has facility of maintaining records of books\n";
+//    cout << "\n\t\t\t\tOne member can issue one book at a time. If he/she";
+//    cout << "\n\t\t\t\tdoes not return Book upto  30 days  he/she have to";
+//    cout << "\n\t\t\t\tpay fine of Rs.15/- per day.";
+//    cout << "\n\n\n\t\t\t Press any key to continue.....";
+//    getch();
+//}

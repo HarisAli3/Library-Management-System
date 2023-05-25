@@ -21,16 +21,12 @@
 class Library : public Books{
 
 private:
-    string librarianPassword;
-
-protected:
     vector<Books> books;
 //    vector<Student> students;
     int bookCount;
 public:
     Library() {
         bookCount = 0;
-        librarianPassword = "";
     }
 
     static void MainMenu(Library&);
