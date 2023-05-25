@@ -6,28 +6,25 @@
 #include "Books.h"
 
 
-void Library::MainMenu(Library& librarian) {
+void Library::MainMenu(Library& byteCode) {
     int choice;
     do {
-//        welcomeMessage();
         MainMenu:
-        headMessage("Library Management System");
+        headMessage("Byte Code Library");
         cout << "\n\n\t\t\t1. Librarian Menu";
         cout << "\n\n\t\t\t2. Student Menu";
         cout << "\n\n\t\t\t0. Exit";
         cout << "\n\n\t\t\tEnter your choice: ";
         cin >> choice;
-//        system("cls");
 
         switch(choice) {
             case 1: {
-                Library::LibrarianMenu(librarian);
+                Library::LibrarianMenu(byteCode);
                 goto MainMenu;
-                break;
             }
             case 2:
-                StudentMenu(librarian);
-                break;
+                StudentMenu(byteCode);
+                goto MainMenu;
         }
     } while (choice != 0);
 }
@@ -45,6 +42,7 @@ void Library::LibrarianMenu(Library& librarian) {
         cout << "\n\n\t\t\t7. Return Book";
         cout << "\n\n\t\t\t8. View Issued Books History:";
         cout << "\n\n\t\t\t9. Save Book Data";
+        cout << "\n\n\t\t\t10. Main Menu";
         cout << "\n\n\t\t\t0. Exit";
         cout << "\n\n\t\t\tEnter your choice: ";
         cin >> librarianChoice;
@@ -77,9 +75,12 @@ void Library::LibrarianMenu(Library& librarian) {
             case 9:
                 librarian.saveBookData();
                 break;
-            case 0:
+            case 10:
                 librarian.saveBookData();
-                cout << "\n\t\t\tThank you for using the Library Management System!";
+                librarianChoice = 0;
+                break;
+            case 0:
+                exit(0);
                 break;
             default:
                 cout << "\n\t\t\tInvalid choice! Please try again.";
@@ -192,16 +193,21 @@ void Library::deleteBook() {
 void Library::viewBookList(int x) {
     headMessage("View Book List");
     cout << "\n\n";
-    for (int i = 0; i < bookCount; i++) {
-        cout << "\n\n\t\t\t\t\t\t********** " << i + 1 << ". ********** \n";
-        cout << "\n\t\t\tBook Name : " << books[i].bookName << endl;
-        cout << "\n\t\t\tBook's Author Name : " << books[i].authorName << endl;
-        cout << "\n\t\t\tBook's ID : " << books[i].bookID << endl;
-        if (x == 1) {
-            cout << "\n\t\t\tBook's Quantity : " << books[i].quantity << endl;
+    if (bookCount != 0){
+        for (int i = 0; i < bookCount; i++) {
+            cout << "\n\n\t\t\t\t\t\t********** " << i + 1 << ". ********** \n";
+            cout << "\n\t\t\tBook Name : " << books[i].bookName << endl;
+            cout << "\n\t\t\tBook's Author Name : " << books[i].authorName << endl;
+            cout << "\n\t\t\tBook's ID : " << books[i].bookID << endl;
+            if (x == 1) {
+                cout << "\n\t\t\tBook's Quantity : " << books[i].quantity << endl;
+            }
         }
+    } else {
+        cout << "\n\n\t\t\tNo books found!";
     }
-    cout << "\n\t\t\tPress any key to continue.....";
+
+    cout << "\n\n\t\t\tPress any key to continue.....";
     getch();
 }
 
@@ -221,7 +227,7 @@ void Library::searchBook() {
             cin >> bookID;
             cin.ignore();
 
-            // Search for book by ID
+            // Search for books by ID
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].bookID == bookID) {
                     cout << "\n\n\t\t\tBook Found!";
@@ -237,7 +243,7 @@ void Library::searchBook() {
             cout << "\n\n\t\t\tEnter Book Name: ";
             getline(cin, bookName);
 
-            // Search for book by name
+            // Search for books by name
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].bookName == bookName) {
                     cout << "\n\n\t\t\tBook Found!";
@@ -292,13 +298,13 @@ void Library::issueBookToStudent() {
     cin >> bookID;
     cin.ignore();
 
-    // Check if the book is already issued to another student
+    // Check if the books is already issued to another student
     if (isBookAlreadyIssued(bookID, studentID) || books[0].quantity <= 0) {
         cout << "\n\t\t\tBook already issued to another student or no stock available!" << endl;
         return;
     }
 
-    // Find the book in the library
+    // Find the books in the library
     Books* book = nullptr;
     for (auto& b : books) {
         if (b.bookID == bookID) {
@@ -307,10 +313,10 @@ void Library::issueBookToStudent() {
         }
     }
     if (book != nullptr) {
-        // Reduce the quantity of the book+
+        // Reduce the quantity of the books+
         book->quantity -= 1;
 
-        // Open the file to append the issued book information
+        // Open the file to append the issued books information
         ofstream outFile("issued_books.txt", ios::app);
         if (outFile.is_open()) {
             outFile << studentID << " " << bookID << " " << time(nullptr) << endl;
@@ -318,7 +324,7 @@ void Library::issueBookToStudent() {
             cout << "\n\t\t\tBook '" << book->bookName << "' issued to student!" << endl;
             saveBookData();
         } else {
-            cout << "\n\t\t\tFailed to issue book!" << endl;
+            cout << "\n\t\t\tFailed to issue books!" << endl;
         }
     } else {
         cout << "\n\t\t\tBook not found in the library!" << endl;
@@ -337,7 +343,7 @@ void Library::returnBookFromStudent() {
     cin >> bookID;
     cin.ignore();
 
-    // Check if the book is issued to the specified student
+    // Check if the books is issued to the specified student
     bool bookIssued = false;
     ifstream file("issued_books.txt");
     if (file.is_open()) {
@@ -352,7 +358,7 @@ void Library::returnBookFromStudent() {
     }
 
     if (bookIssued) {
-        // Calculate the number of days the book was issued
+        // Calculate the number of days the books was issued
         time_t currentTime = time(nullptr);
         ifstream file("issued_books.txt");
         if (file.is_open()) {
@@ -373,7 +379,7 @@ void Library::returnBookFromStudent() {
             file.close();
         }
 
-        // Remove the returned book information from the file
+        // Remove the returned books information from the file
         ifstream inputFile("issued_books.txt");
         ofstream outputFile("temp.txt");
         if (inputFile.is_open() && outputFile.is_open()) {
@@ -389,15 +395,15 @@ void Library::returnBookFromStudent() {
 
             // Replace the original file with the updated file
             if (remove("issued_books.txt") != 0) {
-                cout << "\n\t\t\tFailed to return book!" << endl;
+                cout << "\n\t\t\tFailed to return books!" << endl;
                 return;
             }
             if (rename("temp.txt", "issued_books.txt") != 0) {
-                cout << "\n\t\t\tFailed to return book!" << endl;
+                cout << "\n\t\t\tFailed to return books!" << endl;
                 return;
             }
 
-            // Increase the quantity of the book
+            // Increase the quantity of the books
             for (auto& b : books) {
                 if (b.bookID == bookID) {
                     b.quantity += 1;
@@ -437,7 +443,7 @@ void Library::viewIssuedBooksHistory() {
                 cout << "\n\n\t\t\tBook ID: " << book;
                 cout << "\n\n\t\t\tIssue Time: " << ctime(&issueTime);
                 cout << "\n\t\t\t";
-//                cout << "\t\t\t" << id << "\t\t" << book << "\t\t" << ctime(&issueTime);
+//                cout << "\t\t\t" << id << "\t\t" << books << "\t\t" << ctime(&issueTime);
             }
             //not empty
         }
@@ -462,7 +468,7 @@ void Library::saveBookData() {
         file.close();
         cout << "\n\t\t\tBook data saved successfully!";
     } else {
-        cout << "\n\t\t\tFailed to save book data!";
+        cout << "\n\t\t\tFailed to save books data!";
     }
 }
 
@@ -495,7 +501,7 @@ void Library::loadBookData() {
         file.close();
         cout << "\n\t\t\tBook data loaded successfully!";
     } else {
-        cout << "\n\t\t\tFailed to load book data!";
+        cout << "\n\t\t\tFailed to load books data!";
     }
 }
 

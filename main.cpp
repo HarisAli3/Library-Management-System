@@ -1,14 +1,16 @@
 #include <iostream>
 
-#include "Books.cpp"
 #include "Library.h"
 #include "Library.cpp"
 
 int main() {
-    Library library;
-    library.loadBookData();
-    library.MainMenu(library);
-    library.saveBookData();
+    Library byteCode;
+
+    // Load books data from file
+    byteCode.loadBookData();
+    byteCode.MainMenu(byteCode);
+    // Save books data to file
+    byteCode.saveBookData();
 
     return 0;
 }
