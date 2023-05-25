@@ -10,15 +10,17 @@ void printMessageCenter(const char* message){
     int len = 0;
     int pos = 0;
 
+    // calculate how many space need to print
+
     len = (78 - strlen(message)) /2;
     printf("\t\t\t");
+    // print space
     for(pos = 0; pos < len; pos++){
         printf(" ");
     }
     printf("%s",message);
 }
 void headMessage(const char *message){
-//    system("color 0B");
     system("cls");
     cout << "\t\t\t\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb";
     cout << "\n\t\t\t\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb                                                   \xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb";
@@ -28,4 +30,5 @@ void headMessage(const char *message){
     cout << "\n\t\t\t---------------------------------------------------------------------------\n";
     printMessageCenter(message);
     cout << "\n\t\t\t---------------------------------------------------------------------------";
+
 }

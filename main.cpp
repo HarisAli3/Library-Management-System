@@ -4,12 +4,15 @@
 #include "Library.cpp"
 
 int main() {
+
     Library byteCode;
 
     // Load books data from file
     byteCode.loadBookData();
+
     // Display main menu
     byteCode.MainMenu(byteCode);
+
     // Save books data to file
     byteCode.saveBookData();
 

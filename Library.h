@@ -31,6 +31,7 @@ public:
         bookCount = 0;
     }
 
+    // Getters
     static void MainMenu(Library&);
 
     static void LibrarianMenu(Library&);
@@ -41,7 +42,7 @@ public:
     void deleteBook();
     void viewBookList(int);
     void searchBook(int);
-    
+
     static void displayBookDetails(const Books&, int);
 
     void saveBookData();

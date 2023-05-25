@@ -5,7 +5,6 @@
 #include "Library.h"
 #include "Books.h"
 
-
 void Library::MainMenu(Library& byteCode) {
     int choice;
     do {
@@ -19,11 +18,13 @@ void Library::MainMenu(Library& byteCode) {
         cin >> choice;
 
         if (choice == 1){
+
             string passCode;
             system("cls");
             headMessage("Librarian Authentication");
             cout << "\n\n\t\t\tPlease enter password for librarian: ";
             cin >> passCode;
+
             if (passCode == byteCode.librarianPassword) {
                 cout << "\n\n\t\t\tAccess Granted! Welcome to Byte Code Library.";
                 Library::LibrarianMenu(byteCode);
@@ -50,7 +51,9 @@ void Library::MainMenu(Library& byteCode) {
 }
 
 void Library::LibrarianMenu(Library& librarian) {
+
     int librarianChoice;
+
     do {
         headMessage("Librarian Menu");
         cout << "\n\n\t\t\t1. View Book List";
@@ -63,7 +66,7 @@ void Library::LibrarianMenu(Library& librarian) {
         cout << "\n\n\t\t\t8. View Issued Books History:";
         cout << "\n\n\t\t\t9. Save Book Data";
         cout << "\n\n\t\t\t10. Main Menu";
-        cout << "\n\n\t\t\t0. Exit";
+//        cout << "\n\n\t\t\t0. Exit";
         cout << "\n\n\t\t\tEnter your choice: ";
         cin >> librarianChoice;
 
@@ -101,6 +104,7 @@ void Library::LibrarianMenu(Library& librarian) {
                 break;
             case 0:
                 exit(0);
+
             default:
                 cout << "\n\t\t\tInvalid choice! Please try again.";
         }
@@ -132,7 +136,6 @@ void Library::StudentMenu(Library& student) {
         }
     } while (studentChoice != 0);
 }
-
 
 void Library::addBook() {
 
@@ -313,7 +316,6 @@ void Library::displayBookDetails(const Books& book, int x) {
     getch();
 }
 
-
 bool isBookAlreadyIssued(int studentID) {
     ifstream file("issued_books.txt");
     if (file.is_open()) {
@@ -478,8 +480,6 @@ void Library::returnBookFromStudent() {
         getch();
     }
 }
-
-
 
 void Library::viewIssuedBooksHistory() {
     headMessage("View Issued History");
