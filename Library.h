@@ -39,9 +39,9 @@ public:
     void modifyBook();
     void deleteBook();
     void viewBookList(int);
-    void searchBook();
+    void searchBook(int);
 
-    static void displayBookDetails(const Books&);
+    static void displayBookDetails(const Books&, int);
 
     void saveBookData();
     void loadBookData();

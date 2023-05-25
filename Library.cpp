@@ -52,7 +52,7 @@ void Library::LibrarianMenu(Library& librarian) {
                 librarian.viewBookList(1);
                 break;
             case 2:
-                librarian.searchBook();
+                librarian.searchBook(1);
                 break;
             case 3:
                 librarian.addBook();
@@ -86,12 +86,12 @@ void Library::LibrarianMenu(Library& librarian) {
                 cout << "\n\t\t\tInvalid choice! Please try again.";
         }
     } while (librarianChoice != 0);
-
 }
 
 void Library::StudentMenu(Library& student) {
     int studentChoice;
-    do { headMessage("Student Menu");
+    do {
+        headMessage("Student Menu");
         cout << "\n\n\t\t\t1. View Book List";
         cout << "\n\n\t\t\t2. Search Book";
         cout << "\n\n\t\t\t0. Go Back";
@@ -103,10 +103,7 @@ void Library::StudentMenu(Library& student) {
                 student.viewBookList(2);
                 break;
             case 2:
-                student.searchBook();
-                break;
-            case 3:
-//                            student.calculateFine();
+                student.searchBook(2);
                 break;
             case 0:
                 cout << "\n\t\t\tThank you for using the Library Management System!";
@@ -119,12 +116,16 @@ void Library::StudentMenu(Library& student) {
 
 
 void Library::addBook() {
+
     headMessage("Add Book");
-    cout << "\n\n";
+
     Books newBook;
+
+    cout << "\n\n";
     cout << "\n\t\t\tEnter Book ID: ";
     cin >> newBook.bookID;
     cin.ignore();
+
     for (int i = 0; i < bookCount; i++) {
         if (books[i].bookID == newBook.bookID) {
             cout << "\n\t\t\tBook with the same ID already exists!";
@@ -132,20 +133,28 @@ void Library::addBook() {
             return; // Exit the function if duplicate ID is found
         }
     }
+
     cout << "\n\t\t\tEnter Book Name: ";
     getline(cin, newBook.bookName);
+
     cout << "\n\t\t\tEnter Author Name: ";
     getline(cin, newBook.authorName);
+
     cout << "\n\t\t\tEnter Quantity: ";
     cin >> newBook.quantity;
+
     books.push_back(newBook);
+
     bookCount++;
+
     cout << "\n\t\t\tBook added successfully!";
 }
 
 void Library::modifyBook() {
+
     headMessage("Modify Book");
     cout << "\n\n";
+
     int id;
     cout << "\n\t\t\tEnter Book ID to modify: ";
     cin >> id;
@@ -211,13 +220,14 @@ void Library::viewBookList(int x) {
     getch();
 }
 
-void Library::searchBook() {
+void Library::searchBook(int x) {
     headMessage("Search Book");
     int choice;
     cout << "\n\n\t\t\t1. Search by Book ID";
     cout << "\n\n\t\t\t2. Search by Book Name";
     cout << "\n\n\t\t\tEnter your choice: ";
     cin >> choice;
+    // cin.ignore() is used to clear the buffer
     cin.ignore();
     system("cls");
     switch (choice) {
@@ -231,7 +241,7 @@ void Library::searchBook() {
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].bookID == bookID) {
                     cout << "\n\n\t\t\tBook Found!";
-                    displayBookDetails(books[i]);
+                    displayBookDetails(books[i], x);
                     return;
                 }
             }
@@ -247,7 +257,7 @@ void Library::searchBook() {
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].bookName == bookName) {
                     cout << "\n\n\t\t\tBook Found!";
-                    displayBookDetails(books[i]);
+                    displayBookDetails(books[i],x);
                     return;
                 }
             }
@@ -259,12 +269,14 @@ void Library::searchBook() {
     }
 }
 
-void Library::displayBookDetails(const Books& book) {
+void Library::displayBookDetails(const Books& book, int x) {
     headMessage("Book Details");
     cout << "\n\n\t\t\tBook ID: " << book.bookID;
     cout << "\n\n\t\t\tBook Name: " << book.bookName;
     cout << "\n\n\t\t\tAuthor Name: " << book.authorName;
-    cout << "\n\n\t\t\tQuantity: " << book.quantity;
+    if (x == 1){
+        cout << "\n\n\t\t\tQuantity: " << book.quantity;
+    }
     getch();
 }
 
@@ -457,7 +469,9 @@ void Library::viewIssuedBooksHistory() {
 }
 
 void Library::saveBookData() {
+    // ofstream is used to write data to a file
     ofstream file("books.txt");
+
     if (file.is_open()) {
         for (int i = 0; i < bookCount; i++) {
             file << books[i].bookID << ","
@@ -467,17 +481,25 @@ void Library::saveBookData() {
         }
         file.close();
         cout << "\n\t\t\tBook data saved successfully!";
+        getch();
     } else {
         cout << "\n\t\t\tFailed to save books data!";
+        getch();
     }
 }
 
 void Library::loadBookData() {
+    // ifstream is used to read data from a file
     ifstream file("books.txt");
     if (file.is_open()) {
         bookCount = 0;
         string line;
         while (getline(file, line)) {
+            // stringstream is a stream class to operate on strings
+            // ss is a string stream object
+            // Read data from the file
+            // stoi converts string to integer
+            // getline reads data from the string stream object and stores it in token
             stringstream ss(line);
             string token;
             getline(ss, token, ',');
