@@ -22,6 +22,7 @@ public:
         bookCount = 0;
     }
 
+    // Getters
     static void MainMenu(Library&);
 
     static void LibrarianMenu(Library&);
