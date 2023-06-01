@@ -1,27 +1,18 @@
 //
-// Created by Haris Ali on 5/22/2023.
+// Created by Haris Ali on 5/18/2023.
 //
-
-#ifndef LIBRARY_PROJECT_OOP_LIBRARY_H
-#define LIBRARY_PROJECT_OOP_LIBRARY_H
 
 #include "Books.h"
 #include "Welcome.cpp"
 #include <fstream>
-#include <ctime>
-#include <cstdlib>
 #include <vector>
-#include <cstring>
-#include <fstream>
 #include <sstream>
 #include <conio.h>
 
-
-class Library : public Books {
+class Library : protected Books {
 
 private:
-
-    vector<Books> books;
+    vector<Books> books; // Composition
     int bookCount;
 
     string librarianPassword = "1234";
@@ -41,7 +32,7 @@ public:
     void deleteBook();
     void viewBookList(int);
     void searchBook(int);
-    
+
     static void displayBookDetails(const Books&, int);
 
     void saveBookData();
@@ -53,6 +44,3 @@ public:
     static void viewIssuedBooksHistory();
 
 };
-
-
-#endif //LIBRARY_PROJECT_OOP_LIBRARY_H

@@ -1,15 +1,14 @@
 //
-// Created by Haris Ali on 5/22/2023.
+// Created by Haris Ali on 5/18/2023.
 //
 
-#ifndef LIBRARY_PROJECT_OOP_BOOKS_H
-#define LIBRARY_PROJECT_OOP_BOOKS_H
-
+#include <iostream>
 using namespace std;
 
 class Books {
 
 public:
+
     int bookID;
     string bookName;
     string authorName;
@@ -24,4 +23,3 @@ public:
 };
 
 
-#endif //LIBRARY_PROJECT_OOP_BOOKS_H
