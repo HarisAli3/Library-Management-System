@@ -1,6 +1,6 @@
 # 📚 Library Management System
 
-A simple Library Management System built using C++ that allows users to manage books, issue books to students, and keep track of issued books.
+A simple Library Management System built using C++ using Object-Oriented Concepts that allows users to manage books, issue books to students, and keep track of issued books.
 
 ## 🚀 Features
 
@@ -11,9 +11,12 @@ A simple Library Management System built using C++ that allows users to manage b
 - ✅ Proper error handling and validations.
 
 ## 📸 Screenshots
-![Library Management System Screenshot](main_menu.png)
-![Library Management System Screenshot](student_menu.png)
-![Library Management System Screenshot](librarian_menu.png)
+### Main Menu
+![Library Management System Screenshot](screenshots/main_menu.png)
+### Student Menu
+![Library Management System Screenshot](screenshots/student_menu.png)
+### Librarian Menu
+![Library Management System Screenshot](screenshots/librarian_menu.png)
 
 ## 🛠️ Technologies Used
 - **C++**
