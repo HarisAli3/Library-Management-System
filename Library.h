@@ -6,6 +6,8 @@
 #include "Welcome.cpp"
 #include <fstream>
 #include <vector>
+#include <algorithm>
+#include <cctype>
 #include <sstream>
 #include <conio.h>
 
@@ -31,7 +33,7 @@ public:
     void addBook();
     void modifyBook();
     void deleteBook();
-    void viewBookList(int);
+    void viewBookList(int) const;
     void searchBook(int);
 
     static void displayBookDetails(const Books&, int);

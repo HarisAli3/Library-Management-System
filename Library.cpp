@@ -70,7 +70,7 @@ void Library::LibrarianMenu(Library& librarian) {
 
         switch (librarianChoice) {
             case 1:
-                librarian.viewBookList(1);
+                librarian.viewBookList(librarian.bookCount);
                 break;
             case 2:
                 librarian.searchBook(1);
@@ -228,10 +228,10 @@ void Library::deleteBook() {
     }
 }
 
-void Library::viewBookList(int x) {
+void Library::viewBookList(const int x) const {
     headMessage("View Book List");
     cout << "\n\n";
-    if (bookCount != 0){
+    if (x != 0){
         for (int i = 0; i < bookCount; i++) {
             cout << "\n\n\t\t\t\t\t\t********** " << i + 1 << ". ********** \n";
             cout << "\n\t\t\tBook Name : " << books[i].bookName << endl;
@@ -315,77 +315,74 @@ void Library::displayBookDetails(const Books& book, int x) {
 
 bool isBookAlreadyIssued(int studentID) {
     ifstream file("issued_books.txt");
-    if (file.is_open()) {
-        int id, book;
-        while (file >> id >> book) {
-            if (id == studentID) {
-                file.close();
-                cout << "\n\n\t\t\tAlready Issued" << endl;
-                getch();
-                return true;
-            }
-        }
-        file.close();
+    if (!file.is_open()) {
+        cout << "\n\t\t\tError opening issued_books.txt!" << endl;
+        return false;
     }
+
+    int id, book;
+    while (file >> id >> book) {
+        if (id == studentID) {
+            file.close();
+            return true;
+        }
+    }
+    file.close();
     return false;
 }
 
 void Library::issueBookToStudent() {
     headMessage("Issue Book to Student");
-    int studentID;
 
+    int studentID, bookID;
     cout << "\n\t\t\tEnter Student ID: ";
     cin >> studentID;
     cin.ignore();
 
-    int bookID;
     cout << "\n\t\t\tEnter Book ID: ";
     cin >> bookID;
     cin.ignore();
 
-    // Check if the books is already issued to another student
-    if (isBookAlreadyIssued(studentID) || books[bookID].quantity > 0) {
-        cout << "\n\t\t\tBook already issued to another student or no stock available!" << endl;
+    // Validate Book ID before accessing books vector
+    auto it = find_if(books.begin(), books.end(), [&](const Books& b) { return b.bookID == bookID; });
+
+    if (it == books.end()) {
+        cout << "\n\t\t\tBook not found in the library!" << endl;
         getch();
         return;
     }
 
-    // Find the books in the library
-    Books *book = nullptr;
+    Books &book = *it; // Get reference to the found book
 
-    // b is a reference to the book in the books vector
-    // auto is used to automatically determine the type of b
-    // & is used to pass the address of b
-
-    for (auto& b : books) {
-        if (b.bookID == bookID) {
-            book = &b;
-            break;
-        }
+    // Check if the student has already issued a book
+    if (isBookAlreadyIssued(studentID)) {
+        cout << "\n\t\t\tStudent already has a book issued!" << endl;
+        getch();
+        return;
     }
 
-    if (book != nullptr) {
-        // Reduce the quantity of the books+
-        book->quantity -= 1;
+    // Check if book is available
+    if (book.quantity <= 0) {
+        cout << "\n\t\t\tNo stock available for this book!" << endl;
+        getch();
+        return;
+    }
 
-        // Open the file to append the issued books information
-        // ios:app is used to append the file
-        // Append means to add something to the end of the file
-        ofstream outFile("issued_books.txt", ios::app);
+    // Issue the book
+    book.quantity--;
 
-        if (outFile.is_open()) {
-            // time nullptr is used to get the current time
-            outFile << studentID << " " << bookID << " " << time(nullptr) << endl;
-            outFile.close();
-            cout << "\n\t\t\tBook '" << book->bookName << "' issued to student!" << endl;
-            saveBookData();
-        } else {
-            cout << "\n\t\t\tFailed to issue books!" << endl;
-        }
+    ofstream outFile("issued_books.txt", ios::app);
+    if (outFile.is_open()) {
+        outFile << studentID << " " << bookID << " " << time(nullptr) << endl;
+        outFile.close();
+        cout << "\n\t\t\tBook '" << book.bookName << "' issued successfully!" << endl;
+        saveBookData(); // Save updated book quantity
     } else {
-        cout << "\n\t\t\tBook not found in the library!" << endl;
+        cout << "\n\t\t\tFailed to issue book!" << endl;
     }
+    getch();
 }
+
 
 void Library::returnBookFromStudent() {
     headMessage("Return Book from Student");
@@ -541,28 +538,40 @@ void Library::saveBookData() {
 }
 
 void Library::loadBookData() {
-    // ifstream is used to read data from a file
     ifstream file("books.txt");
     if (file.is_open()) {
         bookCount = 0;
         string line;
+
         while (getline(file, line)) {
-            // stringstream is a stream class to operate on strings
-            // ss is a string stream object
-            // Read data from the file
-            // stoi converts string to integer
-            // getline reads data from the string stream object and stores it in token
             stringstream ss(line);
             string token;
+
+            // Read Book ID
             getline(ss, token, ',');
+            if (token.empty() || !all_of(token.begin(), token.end(), ::isdigit)) {
+                cerr << "\n\t\t\tInvalid book ID in file: " << token;
+                continue;
+            }
             int bookId = stoi(token);
+
+            // Read Book Name
             getline(ss, token, ',');
             string bookName = token;
+
+            // Read Author Name
             getline(ss, token, ',');
             string authorName = token;
+
+            // Read Quantity
             getline(ss, token, ',');
+            if (token.empty() || !all_of(token.begin(), token.end(), ::isdigit)) {
+                cerr << "\n\t\t\tInvalid quantity in file: " << token;
+                continue;
+            }
             int quantity = stoi(token);
 
+            // Add book to list
             Books newBook;
             newBook.bookID = bookId;
             newBook.bookName = bookName;
@@ -572,10 +581,10 @@ void Library::loadBookData() {
             books.push_back(newBook);
             bookCount++;
         }
+
         file.close();
         cout << "\n\t\t\tBook data loaded successfully!";
     } else {
-        cout << "\n\t\t\tFailed to load books data!";
+        cerr << "\n\t\t\tFailed to load books data!";
     }
 }
-
