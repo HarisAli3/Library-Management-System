@@ -10,9 +10,9 @@ A simple Library Management System built using C++ that allows users to manage b
 - 📂 Save and load book data from a file.
 - ✅ Proper error handling and validations.
 
-## 🛠️ Technologies Used
-
 ## 📸 Screenshots
+
+## 🛠️ Technologies Used
 - **C++**
 - **File Handling (fstream)**
 - **STL (vector, string, etc.)**
@@ -38,7 +38,7 @@ A simple Library Management System built using C++ that allows users to manage b
 If you find any bugs or have feature suggestions, feel free to open an issue or contribute by creating a **pull request**.
 
 ## 📜 License
-This project is open-source and available under the MIT License. """
+This project is open-source and available under the MIT License.
 
 
 
