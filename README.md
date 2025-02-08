@@ -1,12 +1,21 @@
-# Library-Management-System C++
+# 📚 Library Management System
 
-This is a project for managing a library using C++.
+A simple Library Management System built using C++ that allows users to manage books, issue books to students, and keep track of issued books.
 
-## Installation
+## 🚀 Features
 
-Clone the repository and compile the code using a C++ compiler:
+- 📖 Add, delete, and view books.
+- 🎓 Issue books to students.
+- 🔍 Search for books by ID or name.
+- 📂 Save and load book data from a file.
+- ✅ Proper error handling and validations.
 
-```shell
-git clone https://github.com/your-username/library-project.git
-cd library-project
-g++ -o library main.cpp Library.cpp Books.cpp
+## 📸 Screenshots
+
+
+## 🛠 Installation & Usage
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/HarisAli3/Library-Management-System.git
+   cd Library-Management-System
